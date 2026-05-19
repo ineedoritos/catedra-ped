@@ -71,6 +71,15 @@ namespace ProyectoCatedra
             this.Controls.Add(btnBuscar);
             this.Controls.Add(lblTotal);
             this.Controls.Add(dgv);
+            AplicarEscaladoDpi();
+        }
+
+        private void AplicarEscaladoDpi()
+        {
+            float factor = DeviceDpi / 96f;
+            if (factor <= 1f) return;
+
+            ProyectoCatedra.Utilidades.EscaladorDpi.EscalarFormulario(this, factor);
         }
 
         private void CargarDatos(string filtroBeneficiario = "")

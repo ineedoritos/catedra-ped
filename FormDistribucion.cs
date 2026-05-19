@@ -154,6 +154,15 @@ namespace ProyectoCatedra
             cbFiltroCategoria.SelectedIndexChanged += (s, e) => {
                 if (propuestaActual != null) MostrarPropuesta();
             };
+            AplicarEscaladoDpi();
+        }
+
+        private void AplicarEscaladoDpi()
+        {
+            float factor = DeviceDpi / 96f;
+            if (factor <= 1f) return;
+
+            ProyectoCatedra.Utilidades.EscaladorDpi.EscalarFormulario(this, factor);
         }
 
         private void CargarFiltroCategorias()

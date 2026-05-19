@@ -217,8 +217,7 @@ namespace ProyectoCatedra
             float factor = DeviceDpi / 96f;
             if (factor <= 1f) return;
 
-            this.Size = new Size((int)Math.Round(this.Width * factor), (int)Math.Round(this.Height * factor));
-            EscaladorDpi.EscalarJerarquia(this, factor);
+            EscaladorDpi.EscalarFormulario(this, factor);
         }
 
         private void Limpiar() { txtNombre.Clear(); seleccionado = null; btnEditar.Enabled = btnEliminar.Enabled = false; dgv.ClearSelection(); }

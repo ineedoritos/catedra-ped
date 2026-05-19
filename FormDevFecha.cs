@@ -68,6 +68,15 @@ namespace ProyectoCatedra
             Controls.Add(btnSimular);
             Controls.Add(btnReal);
             Controls.Add(lblEstado);
+            AplicarEscaladoDpi();
+        }
+
+        private void AplicarEscaladoDpi()
+        {
+            float factor = DeviceDpi / 96f;
+            if (factor <= 1f) return;
+
+            ProyectoCatedra.Utilidades.EscaladorDpi.EscalarFormulario(this, factor);
         }
 
         private void ActualizarEstado()
