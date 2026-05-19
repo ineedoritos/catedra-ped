@@ -6,6 +6,8 @@ using ProyectoCatedra.Modelos;
 using ProyectoCatedra.Estructuras;
 using ProyectoCatedra.Utilidades;
 
+using System.Text.RegularExpressions;
+
 namespace ProyectoCatedra
 {
     public class FormBeneficiarios : Form
@@ -44,10 +46,10 @@ namespace ProyectoCatedra
             btnNuevo.Click += (s, e) => Limpiar();
 
             Label l1 = new Label { Text = "Nombre:", Location = new Point(20, 45), AutoSize = true };
-            txtNombre.Location = new Point(20, 65); txtNombre.Size = new Size(180, 20);
+            txtNombre.Location = new Point(20, 65); txtNombre.Size = new Size(180, 20); txtNombre.MaxLength = 100;
 
             Label l2 = new Label { Text = "Miembros:", Location = new Point(210, 45), AutoSize = true };
-            numMiembros.Location = new Point(210, 65); numMiembros.Size = new Size(60, 20); numMiembros.Minimum = 1; numMiembros.Maximum = 999;
+            numMiembros.Location = new Point(210, 65); numMiembros.Size = new Size(60, 20); numMiembros.Minimum = 1; numMiembros.Maximum = 50;
 
             Label l3 = new Label { Text = "Nivel de vulnerabilidad:", Location = new Point(280, 45), AutoSize = true };
             cmbVulnerabilidad.Location = new Point(280, 65); cmbVulnerabilidad.Size = new Size(190, 23); cmbVulnerabilidad.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -65,6 +67,11 @@ namespace ProyectoCatedra
                 if (string.IsNullOrWhiteSpace(nombreNuevo))
                 {
                     MessageBox.Show("Ingrese el nombre del beneficiario.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (!Regex.IsMatch(nombreNuevo, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"))
+                {
+                    MessageBox.Show("El nombre solo puede contener letras y espacios.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 if (ExisteNombreBeneficiario(nombreNuevo, -1)) {
@@ -93,6 +100,11 @@ namespace ProyectoCatedra
                 if (string.IsNullOrWhiteSpace(nombreNuevo))
                 {
                     MessageBox.Show("Ingrese el nombre del beneficiario.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (!Regex.IsMatch(nombreNuevo, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"))
+                {
+                    MessageBox.Show("El nombre solo puede contener letras y espacios.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 if (ExisteNombreBeneficiario(nombreNuevo, seleccionado.Id)) {
@@ -176,7 +188,7 @@ namespace ProyectoCatedra
             };
 
             GroupBox gb = new GroupBox { Text = "Buscar Beneficiario (por Nombre)", Location = new Point(20, 100), Size = new Size(740, 60) };
-            txtBuscar.Location = new Point(15, 25); txtBuscar.Size = new Size(350, 20);
+            txtBuscar.Location = new Point(15, 25); txtBuscar.Size = new Size(350, 20); txtBuscar.MaxLength = 100;
             btnBuscar.Text = "Buscar"; btnBuscar.Location = new Point(380, 23); btnBuscar.Size = new Size(140, 25);
             btnBuscar.Click += (s, e) => {
                 var resultados = servicio.CargarEnArbol().BuscarParcial(txtBuscar.Text);

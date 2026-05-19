@@ -38,6 +38,7 @@ namespace ProyectoCatedra
             Label lblBuscar = new Label { Text = "Beneficiario:", Location = new Point(130, 22), AutoSize = true };
             txtBuscar.Location = new Point(210, 19);
             txtBuscar.Size = new Size(180, 23);
+            txtBuscar.MaxLength = 100;
             btnBuscar.Text = "Filtrar";
             btnBuscar.Location = new Point(400, 15);
             btnBuscar.Size = new Size(80, 30);

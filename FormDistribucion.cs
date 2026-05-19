@@ -19,7 +19,6 @@ namespace ProyectoCatedra
         private Button btnConfirmar = new Button();
         private Button btnConfirmarFamilia = new Button();
         private Button btnDeshacer = new Button();
-        private TextBox txtObservaciones = new TextBox();
         private ComboBox cbFiltroCategoria = new ComboBox();
         private Button btnFiltrar = new Button();
         private Button btnLimpiarFiltro = new Button();
@@ -78,10 +77,6 @@ namespace ProyectoCatedra
             btnColapsarTodo.Size = new Size(105, 28);
             btnColapsarTodo.Click += (s, e) => ColapsarTodasLasFamiliasVisibles();
 
-            Label lblObs = new Label { Text = "Observaciones:", Location = new Point(370, 20), AutoSize = true };
-            txtObservaciones.Location = new Point(460, 17);
-            txtObservaciones.Size = new Size(310, 25);
-
             btnConfirmarFamilia.Text = "Entregar Familia Seleccionada"; btnConfirmarFamilia.Location = new Point(385, 95); btnConfirmarFamilia.Size = new Size(195, 35);
             btnConfirmarFamilia.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnConfirmarFamilia.BackColor = Color.LightSkyBlue;
@@ -138,8 +133,6 @@ namespace ProyectoCatedra
             this.Controls.Add(btnLimpiarFiltro);
             this.Controls.Add(btnExpandirTodo);
             this.Controls.Add(btnColapsarTodo);
-            this.Controls.Add(lblObs);
-            this.Controls.Add(txtObservaciones);
             this.Controls.Add(btnConfirmarFamilia);
             this.Controls.Add(btnConfirmar);
             this.Controls.Add(dgv);
@@ -585,7 +578,7 @@ namespace ProyectoCatedra
 
             try
             {
-                servicio.ConfirmarDistribucion(detalles, txtObservaciones.Text);
+                servicio.ConfirmarDistribucion(detalles);
                 RemoverDetallesConfirmados(detalles);
                 undoStack = new Pila();
                 btnDeshacer.Enabled = false;

@@ -6,6 +6,8 @@ using ProyectoCatedra.Modelos;
 using ProyectoCatedra.Estructuras;
 using ProyectoCatedra.Utilidades;
 
+using System.Text.RegularExpressions;
+
 namespace ProyectoCatedra
 {
     public class FormProductos : Form
@@ -54,23 +56,23 @@ namespace ProyectoCatedra
             cbCat.Location = new Point(270, 65); cbCat.Size = new Size(120, 20); cbCat.DropDownStyle = ComboBoxStyle.DropDownList;
             Label l4 = new Label { Text = "Stock:", Location = new Point(400, 45), AutoSize = true };
             numStock.Location = new Point(400, 65); numStock.Size = new Size(80, 20);
-            numStock.Maximum = decimal.MaxValue;
-            numStock.DecimalPlaces = 2;
+            numStock.Maximum = 999999;
+            numStock.DecimalPlaces = 0;
 
             Label l5 = new Label { Text = "Máx. por entrega:", Location = new Point(490, 45), AutoSize = true };
             numMaxEntrega.Location = new Point(490, 65); numMaxEntrega.Size = new Size(90, 20);
-            numMaxEntrega.Maximum = decimal.MaxValue;
-            numMaxEntrega.DecimalPlaces = 2;
+            numMaxEntrega.Maximum = 999999;
+            numMaxEntrega.DecimalPlaces = 0;
 
             Label l6 = new Label { Text = "Días de espera:", Location = new Point(590, 45), AutoSize = true };
             numDiasReposicion.Location = new Point(590, 65); numDiasReposicion.Size = new Size(90, 20);
             numDiasReposicion.Maximum = 3650;
 
             ToolTip ayudaReglas = new ToolTip();
-            ayudaReglas.SetToolTip(numMaxEntrega, "Cantidad máxima que una familia puede recibir de este producto en una entrega. Use 0 para no limitar.");
-            ayudaReglas.SetToolTip(l5, "Cantidad máxima que una familia puede recibir de este producto en una entrega. Use 0 para no limitar.");
-            ayudaReglas.SetToolTip(numDiasReposicion, "Días que deben pasar antes de sugerir otra entrega del mismo producto a la misma familia. Use 0 si no aplica.");
-            ayudaReglas.SetToolTip(l6, "Días que deben pasar antes de sugerir otra entrega del mismo producto a la misma familia. Use 0 si no aplica.");
+            ayudaReglas.SetToolTip(numMaxEntrega, "Cantidad máxima que una familia puede recibir de este producto en una entrega.");
+            ayudaReglas.SetToolTip(l5, "Cantidad máxima que una familia puede recibir de este producto en una entrega.");
+            ayudaReglas.SetToolTip(numDiasReposicion, "Días que deben pasar antes de sugerir otra entrega del mismo producto a la misma familia.");
+            ayudaReglas.SetToolTip(l6, "Días que deben pasar antes de sugerir otra entrega del mismo producto a la misma familia.");
 
             btnGuardar.Text = "Guardar"; btnGuardar.Location = new Point(690, 63); btnGuardar.Size = new Size(80, 25);
             btnGuardar.Click += (s, e) =>
@@ -80,13 +82,19 @@ namespace ProyectoCatedra
                     MessageBox.Show("Complete nombre y seleccione una categoría.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+                
+                if (!Regex.IsMatch(txtNombre.Text, @"^[a-zA-Z0-9\s]+$"))
+                {
+                    MessageBox.Show("El nombre del producto solo puede contener letras, números y espacios.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 try
                 {
                     string nombreNuevo = txtNombre.Text.Trim();
                     int idCategoria = ((Categoria)cbCat.SelectedItem).Id;
-                    double stockNuevo = (double)numStock.Value;
-                    double? maxEntrega = numMaxEntrega.Value > 0 ? (double)numMaxEntrega.Value : null;
+                    int stockNuevo = (int)numStock.Value;
+                    int? maxEntrega = numMaxEntrega.Value > 0 ? (int)numMaxEntrega.Value : null;
                     int? diasReposicion = numDiasReposicion.Value > 0 ? (int)numDiasReposicion.Value : null;
 
                     if (productoSeleccionado != null)
@@ -321,7 +329,7 @@ namespace ProyectoCatedra
 
             Label lblStockBajo = new Label
             {
-                Text = "0 en reglas = sin límite/sin espera. Filas rojas = stock bajo.",
+                Text = "Filas rojas = stock bajo.",
                 Location = new Point(450, 435),
                 AutoSize = true,
                 ForeColor = Color.DarkRed

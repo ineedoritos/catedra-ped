@@ -6,6 +6,8 @@ using ProyectoCatedra.Modelos;
 using ProyectoCatedra.Estructuras;
 using ProyectoCatedra.Utilidades;
 
+using System.Text.RegularExpressions;
+
 namespace ProyectoCatedra
 {
     public class FormUnidades : Form
@@ -53,7 +55,7 @@ namespace ProyectoCatedra
             btnNuevo.Click += (s, e) => Limpiar();
 
             Label lblNom = new Label { Text = "Nombre:", Location = new Point(15, 55), AutoSize = true };
-            txtNombre.Location = new Point(15, 75); txtNombre.Size = new Size(150, 20);
+            txtNombre.Location = new Point(15, 75); txtNombre.Size = new Size(150, 20); txtNombre.MaxLength = 50;
             
             Label lblTip = new Label { Text = "Tipo:", Location = new Point(180, 55), AutoSize = true };
             cbTipo.Location = new Point(180, 75); cbTipo.Size = new Size(170, 20); cbTipo.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -66,8 +68,14 @@ namespace ProyectoCatedra
                     MessageBox.Show("Complete nombre y tipo de unidad.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-
+                
                 string nombreNuevo = txtNombre.Text.Trim();
+                if (!Regex.IsMatch(nombreNuevo, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"))
+                {
+                    MessageBox.Show("El nombre de la unidad solo puede contener letras y espacios.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 string tipoNuevo = cbTipo.SelectedItem?.ToString() ?? "";
 
                 if (YaExisteUnidad(nombreNuevo, tipoNuevo, -1))
@@ -99,6 +107,12 @@ namespace ProyectoCatedra
                 }
 
                 string nombreNuevo = txtNombre.Text.Trim();
+                if (!Regex.IsMatch(nombreNuevo, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"))
+                {
+                    MessageBox.Show("El nombre de la unidad solo puede contener letras y espacios.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 string tipoNuevo = cbTipo.SelectedItem?.ToString() ?? "";
                 if (YaExisteUnidad(nombreNuevo, tipoNuevo, unidadSeleccionada.Id))
                 {
@@ -186,7 +200,7 @@ namespace ProyectoCatedra
 
             gb2.Controls.AddRange(new Control[] { lblCat, cbCategorias, btnAsociar, btnQuitarAsociacion });
 
-            TextBox txtBuscar = new TextBox { Location = new Point(20, 185), Size = new Size(200, 20) };
+            TextBox txtBuscar = new TextBox { Location = new Point(20, 185), Size = new Size(200, 20), MaxLength = 50 };
             Button btnBuscar = new Button { Text = "Buscar", Location = new Point(230, 183), Size = new Size(80, 25) };
             btnBuscar.Click += (s, e) => CargarTodo(txtBuscar.Text);
 

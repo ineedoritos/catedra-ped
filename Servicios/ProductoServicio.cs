@@ -23,7 +23,7 @@ namespace ProyectoCatedra.Servicios
             Producto? existente = (Producto?)indicePorSku.Buscar(p.SKU);
             if (existente != null)
             {
-                double stockAnterior = existente.Stock;
+                int stockAnterior = existente.Stock;
                 existente.Stock += p.Stock;
 
                 try
@@ -207,7 +207,7 @@ namespace ProyectoCatedra.Servicios
             return lista;
         }
 
-        public double ObtenerStockProducto(int productoId)
+        public int ObtenerStockProducto(int productoId)
         {
             using (var conexion = conexionDB.ObtenerConexion())
             {
@@ -217,7 +217,7 @@ namespace ProyectoCatedra.Servicios
                 {
                     comando.Parameters.AddWithValue("@id", productoId);
                     var resultado = comando.ExecuteScalar();
-                    return resultado == null || resultado == DBNull.Value ? 0 : Convert.ToDouble(resultado);
+                    return resultado == null || resultado == DBNull.Value ? 0 : Convert.ToInt32(resultado);
                 }
             }
         }
@@ -239,8 +239,8 @@ namespace ProyectoCatedra.Servicios
                             SKU = lector["SKU"]?.ToString() ?? string.Empty,
                             Nombre = lector["Nombre"]?.ToString() ?? string.Empty,
                             IdCategoria = Convert.ToInt32(lector["IdCategoria"]),
-                            Stock = Convert.ToDouble(lector["Stock"]),
-                            MaximoPorEntrega = lector["MaximoPorEntrega"] == DBNull.Value ? null : Convert.ToDouble(lector["MaximoPorEntrega"]),
+                            Stock = Convert.ToInt32(lector["Stock"]),
+                            MaximoPorEntrega = lector["MaximoPorEntrega"] == DBNull.Value ? null : Convert.ToInt32(lector["MaximoPorEntrega"]),
                             DiasReposicion = lector["DiasReposicion"] == DBNull.Value ? null : Convert.ToInt32(lector["DiasReposicion"]),
                             NombreCategoria = lector["CatNombre"]?.ToString() ?? string.Empty
                         };

@@ -5,6 +5,8 @@ using ProyectoCatedra.Servicios;
 using ProyectoCatedra.Modelos;
 using ProyectoCatedra.Estructuras;
 
+using System.Text.RegularExpressions;
+
 namespace ProyectoCatedra
 {
     public class FormTasaConsumo : Form
@@ -232,7 +234,13 @@ namespace ProyectoCatedra
                 return;
             }
 
-            if (!double.TryParse(txtTasa.Text, out double tasa) || tasa <= 0)
+            if (!Regex.IsMatch(txtTasa.Text, @"^[0-9]+(\.[0-9]{1,2})?$") && !Regex.IsMatch(txtTasa.Text, @"^[0-9]+(\,[0-9]{1,2})?$"))
+            {
+                MessageBox.Show("La tasa debe ser un número con hasta dos decimales.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!double.TryParse(txtTasa.Text.Replace(".", ","), out double tasa) && !double.TryParse(txtTasa.Text.Replace(",", "."), out tasa) || tasa <= 0)
             {
                 MessageBox.Show("La tasa debe ser un número válido mayor a 0.");
                 return;

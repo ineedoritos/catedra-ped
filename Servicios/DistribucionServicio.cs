@@ -404,7 +404,7 @@ namespace ProyectoCatedra.Servicios
             return productoServicio.ObtenerStockProducto(productoId);
         }
 
-        public void ConfirmarDistribucion(ListaEnlazada detalles, string observaciones)
+        public void ConfirmarDistribucion(ListaEnlazada detalles)
         {
             using (var conexion = conexionDB.ObtenerConexion())
             {
@@ -414,12 +414,11 @@ namespace ProyectoCatedra.Servicios
                     try
                     {
                         // 1. Crear la Orden
-                        string sqlOrden = "INSERT INTO Orden (FechaGeneracion, Estado, Observaciones) VALUES (@fecha, 'CONFIRMADA', @obs); SELECT last_insert_rowid();";
+                        string sqlOrden = "INSERT INTO Orden (FechaGeneracion, Estado) VALUES (@fecha, 'CONFIRMADA'); SELECT last_insert_rowid();";
                         long ordenId = 0;
                         using (var cmdO = new SQLiteCommand(sqlOrden, conexion, tr))
                         {
                             cmdO.Parameters.AddWithValue("@fecha", RelojDemo.Ahora.ToString("yyyy-MM-dd HH:mm:ss"));
-                            cmdO.Parameters.AddWithValue("@obs", observaciones);
                             ordenId = (long)cmdO.ExecuteScalar();
                         }
 

@@ -80,7 +80,7 @@ namespace ProyectoCatedra.Utilidades
                 string[] p = lineas[i].Split(',');
                 if (p.Length < 4) continue;
                 if (string.IsNullOrWhiteSpace(p[0]) || string.IsNullOrWhiteSpace(p[1]) || string.IsNullOrWhiteSpace(p[2])) continue;
-                if (!double.TryParse(p[3], out double stock) || stock < 0) continue;
+                if (!int.TryParse(p[3], out int stock) || stock < 0) continue;
 
                 lista.Agregar(new Producto
                 {

@@ -6,6 +6,8 @@ using ProyectoCatedra.Modelos;
 using ProyectoCatedra.Estructuras;
 using ProyectoCatedra.Utilidades;
 
+using System.Text.RegularExpressions;
+
 namespace ProyectoCatedra
 {
     public class FormCategorias : Form
@@ -39,12 +41,13 @@ namespace ProyectoCatedra
             btnNuevo.Click += (s, e) => Limpiar();
 
             Label lbl = new Label { Text = "Nombre:", Location = new Point(20, 45), AutoSize = true };
-            txtNombre.Location = new Point(20, 65); txtNombre.Size = new Size(180, 20);
+            txtNombre.Location = new Point(20, 65); txtNombre.Size = new Size(180, 20); txtNombre.MaxLength = 50;
             
             btnGuardar.Text = "Guardar"; btnGuardar.Location = new Point(210, 63); btnGuardar.Size = new Size(70, 25);
             btnGuardar.Click += (s, e) => {
                 string nombre = txtNombre.Text.Trim();
                 if (string.IsNullOrWhiteSpace(nombre)) { MessageBox.Show("Ingrese el nombre de la categoría.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+                if (!Regex.IsMatch(nombre, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$")) { MessageBox.Show("El nombre de la categoría solo puede contener letras y espacios.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
                 if (servicio.ExisteNombre(nombre)) { MessageBox.Show("Ya existe una categoría con ese nombre.", "Registro duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
 
                 try
@@ -65,6 +68,7 @@ namespace ProyectoCatedra
                 if (seleccionado == null) return;
                 string nombre = txtNombre.Text.Trim();
                 if (string.IsNullOrWhiteSpace(nombre)) { MessageBox.Show("Ingrese el nombre de la categoría.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+                if (!Regex.IsMatch(nombre, @"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$")) { MessageBox.Show("El nombre de la categoría solo puede contener letras y espacios.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
 
                 try
                 {
@@ -154,7 +158,7 @@ namespace ProyectoCatedra
                 }
             };
 
-            TextBox txtBuscar = new TextBox { Location = new Point(20, 105), Size = new Size(250, 20) };
+            TextBox txtBuscar = new TextBox { Location = new Point(20, 105), Size = new Size(250, 20), MaxLength = 50 };
             Button btnBuscar = new Button { Text = "Buscar", Location = new Point(280, 103), Size = new Size(80, 25) };
             btnBuscar.Click += (s, e) => Cargar(txtBuscar.Text);
 
